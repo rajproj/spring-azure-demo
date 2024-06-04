@@ -26,9 +26,6 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
         
-      - name: Publish artifact
-        run: ./gradlew publish
-
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
