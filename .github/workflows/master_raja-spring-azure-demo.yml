@@ -20,17 +20,15 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: '17'
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew clean build
-        
+      - name: Build with Maven
+        run: mvn clean install
+
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: java-app
-          path: build/libs
+          path: '${{ github.workspace }}/target/*.jar'
 
   deploy:
     runs-on: ubuntu-latest
@@ -43,17 +41,16 @@ jobs:
   
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v3
         with:
           name: java-app
-          path: build/libs
       
       - name: Login to Azure
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_5F3A496359DD4025A16DF62775159BF3 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_05A35B262E7045C59CA6EC6C01CEAB6F }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_FF9B772BDD0F4A59AD156C6EA04A7A60 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_AB3427F5CC8F4B6791BF35A9A8878537 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_EF98D5AC8AE946C39E0A2F437DA0F68E }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_9D2EE72B91CF4FD1ABC8DC0CBC4EAD43 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
